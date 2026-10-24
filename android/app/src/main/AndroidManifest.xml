@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="guppy_breeding_app"
+        android:label="genefish_line"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

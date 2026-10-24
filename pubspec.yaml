@@ -1,22 +1,30 @@
-name: guppy_breeding_app   # тут имя вашего проекта
+name: genefish_line
 description: A new Flutter project.
 publish_to: 'none'
 version: 1.0.0+1
 
-# ВОТ ЭТОТ БЛОК НУЖНО ДОБАВИТЬ ИЛИ ИСПРАВИТЬ:
 environment:
-  sdk: '^3.13.0' # Или версия выше, которую требует ваша система
+  sdk: '^3.13.0' # Убедитесь, что эта версия совпадает с вашей версией Dart (можно посмотреть в flutter doctor)
 
 dependencies:
   flutter:
     sdk: flutter
-  isar: ^3.1.0+1
-  isar_community_flutter_libs: ^3.2.0
+  flutter_localizations:    # <--- ДОБАВИТЬ ЭТО
+    sdk: flutter
+  # Зависимости
+  isar_community: ^3.3.2
+  isar_community_flutter_libs: ^3.3.2
   image_picker: ^1.1.2
-  path_provider: ^2.1.4 
+  path_provider: ^2.1.4
+  console_plus: ^1.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  isar_generator: ^3.1.0+1
+  # Генератор кода и сборщик
+  isar_community_generator: ^3.3.2
   build_runner: ^2.4.13
+
+# ВОТ СЮДА НУЖНО ДОБАВИТЬ ЭТУ СЕКЦИЮ:
+flutter:
+  uses-material-design: true

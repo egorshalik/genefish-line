@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
+import '../databases/isar_service.dart';
 import '../models/models.dart';
-import '../main.dart'; // isar
 import 'create_line_screen.dart';
 import 'line_details_screen.dart';
 
@@ -11,6 +11,7 @@ class LineListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isar = IsarService.instance;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Мои линии'),

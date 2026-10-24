@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
+import '../databases/isar_service.dart';
 import '../models/models.dart';
-import '../main.dart';
 import '../utils/trait_label.dart';
 import '../utils/generation_utils.dart';
 
@@ -31,7 +31,7 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
   late Future<List<Fish>> _malesFuture;
   late Future<List<Fish>> _femalesFuture;
   late Future<List<String>> _generationsFuture;
-
+  final isar = IsarService.instance; 
   bool _saving = false;
 
   @override

@@ -1,4 +1,4 @@
-package com.example.guppy_breeding_app
+package com.eshal.genefish_line
 
 import io.flutter.embedding.android.FlutterActivity
 

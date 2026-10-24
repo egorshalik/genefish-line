@@ -1,10 +1,11 @@
-import 'package:isar/isar.dart';
-import '../main.dart';
+import 'package:isar_community/isar.dart';
+import '../databases/isar_service.dart';
 import '../models/models.dart';
 
 class GenerationUtils {
   /// Возвращает список поколений для выбора: P, F1..F{maxExisting+1}.
   static Future<List<String>> listForLine(int lineId) async {
+    final isar = IsarService.instance;
     // Собираем все generation из рыб и помётов этой линии.
     final fishGens = (await isar.fishs
             .filter()

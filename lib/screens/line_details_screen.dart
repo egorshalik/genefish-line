@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
+import '../databases/isar_service.dart';
 import '../models/models.dart';
-import '../main.dart';
 import 'add_litter_screen.dart';
 import 'add_fish_screen.dart';
 import '../utils/trait_label.dart';
@@ -19,7 +19,7 @@ class LineDetailsScreen extends StatefulWidget {
 class _LineDetailsScreenState extends State<LineDetailsScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-
+  final isar = IsarService.instance; 
   @override
   void initState() {
     super.initState();
@@ -75,13 +75,14 @@ class _LineDetailsScreenState extends State<LineDetailsScreen>
 
 class _JournalTab extends StatelessWidget {
   final Line line;
-
+  
   const _JournalTab({required this.line});
 
   @override
   Widget build(BuildContext context) {
     // Лениво подтягиваем все помёты этой линии, отсортированные по дате.
 
+    final isar = IsarService.instance; 
     final label = traitLabel(line);
     return StreamBuilder<List<Litter>>(
       stream: isar.litters
@@ -213,6 +214,7 @@ class _FishTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isar = IsarService.instance;
     return StreamBuilder<List<Fish>>(
       stream: isar.fishs
           .filter()
@@ -384,6 +386,8 @@ class _StatsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isar = IsarService.instance;
+    
     return StreamBuilder<List<Litter>>(
       stream: isar.litters
           .filter()

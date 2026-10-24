@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../databases/isar_service.dart';
 import '../models/models.dart';
-import '../main.dart';
 import '../utils/generation_utils.dart';
 import '../utils/trait_label.dart';
 import '../widgets/add_trait_dialog.dart';
@@ -35,11 +35,14 @@ class _AddFishScreenState extends State<AddFishScreen> {
 
   bool _hasTargetTrait = false;
 
+  final isar = IsarService.instance; 
+
   Line? _line;
   bool _saving = false;
 
   @override
   void initState() {
+    // Получаем базу через сервис
     super.initState();
     _loadLine();
     _generationsFuture = GenerationUtils.listForLine(widget.lineId)

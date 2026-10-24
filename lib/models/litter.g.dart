@@ -7,7 +7,7 @@ part of 'litter.dart';
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types, experimental_member_use
 
 extension GetLitterCollection on Isar {
   IsarCollection<Litter> get litters => this.collection();
@@ -41,8 +41,9 @@ const LitterSchema = CollectionSchema(
       id: 4,
       name: r'totalCount',
       type: IsarType.long,
-    )
+    ),
   },
+
   estimateSize: _litterEstimateSize,
   serialize: _litterSerialize,
   deserialize: _litterDeserialize,
@@ -59,9 +60,9 @@ const LitterSchema = CollectionSchema(
           name: r'birthDate',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
-    )
+    ),
   },
   links: {
     r'line': LinkSchema(
@@ -81,13 +82,14 @@ const LitterSchema = CollectionSchema(
       name: r'mother',
       target: r'Fish',
       single: true,
-    )
+    ),
   },
   embeddedSchemas: {},
+
   getId: _litterGetId,
   getLinks: _litterGetLinks,
   attach: _litterAttach,
-  version: '3.1.0+1',
+  version: '3.4.1',
 );
 
 int _litterEstimateSize(
@@ -184,10 +186,7 @@ extension LitterQueryWhereSort on QueryBuilder<Litter, Litter, QWhere> {
 extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
   QueryBuilder<Litter, Litter, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -213,8 +212,10 @@ extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
     });
   }
 
-  QueryBuilder<Litter, Litter, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Litter, Litter, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -222,8 +223,10 @@ extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
     });
   }
 
-  QueryBuilder<Litter, Litter, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Litter, Litter, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -238,56 +241,67 @@ extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterWhereClause> birthDateEqualTo(
-      DateTime birthDate) {
+    DateTime birthDate,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'birthDate',
-        value: [birthDate],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'birthDate', value: [birthDate]),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterWhereClause> birthDateNotEqualTo(
-      DateTime birthDate) {
+    DateTime birthDate,
+  ) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'birthDate',
-              lower: [],
-              upper: [birthDate],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'birthDate',
-              lower: [birthDate],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'birthDate',
+                lower: [],
+                upper: [birthDate],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'birthDate',
+                lower: [birthDate],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'birthDate',
-              lower: [birthDate],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'birthDate',
-              lower: [],
-              upper: [birthDate],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'birthDate',
+                lower: [birthDate],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'birthDate',
+                lower: [],
+                upper: [birthDate],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
@@ -297,12 +311,14 @@ extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'birthDate',
-        lower: [birthDate],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'birthDate',
+          lower: [birthDate],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
@@ -311,12 +327,14 @@ extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'birthDate',
-        lower: [],
-        upper: [birthDate],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'birthDate',
+          lower: [],
+          upper: [birthDate],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
@@ -327,25 +345,27 @@ extension LitterQueryWhere on QueryBuilder<Litter, Litter, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'birthDate',
-        lower: [lowerBirthDate],
-        includeLower: includeLower,
-        upper: [upperBirthDate],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'birthDate',
+          lower: [lowerBirthDate],
+          includeLower: includeLower,
+          upper: [upperBirthDate],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
 
 extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
   QueryBuilder<Litter, Litter, QAfterFilterCondition> birthDateEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'birthDate',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'birthDate', value: value),
+      );
     });
   }
 
@@ -354,11 +374,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'birthDate',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'birthDate',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -367,11 +389,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'birthDate',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'birthDate',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -382,13 +406,15 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'birthDate',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'birthDate',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -397,11 +423,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'generation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'generation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -411,12 +439,14 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'generation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'generation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -426,12 +456,14 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'generation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'generation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -443,14 +475,16 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'generation',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'generation',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -459,11 +493,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'generation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'generation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -472,62 +508,67 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'generation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'generation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> generationContains(
-      String value,
-      {bool caseSensitive = true}) {
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'generation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'generation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> generationMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'generation',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'generation',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> generationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'generation',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'generation', value: ''),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> generationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'generation',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'generation', value: ''),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -536,11 +577,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -549,11 +592,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -564,23 +609,25 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> targetCountEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'targetCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'targetCount', value: value),
+      );
     });
   }
 
@@ -589,11 +636,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'targetCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'targetCount',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -602,11 +651,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'targetCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'targetCount',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -617,13 +668,15 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'targetCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'targetCount',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -632,27 +685,33 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'targetPercentage',
-        value: value,
-        epsilon: epsilon,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'targetPercentage',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition>
-      targetPercentageGreaterThan(
+  targetPercentageGreaterThan(
     double value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'targetPercentage',
-        value: value,
-        epsilon: epsilon,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'targetPercentage',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
     });
   }
 
@@ -662,12 +721,15 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'targetPercentage',
-        value: value,
-        epsilon: epsilon,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'targetPercentage',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
     });
   }
 
@@ -679,24 +741,27 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'targetPercentage',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'targetPercentage',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
+      );
     });
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> totalCountEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'totalCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'totalCount', value: value),
+      );
     });
   }
 
@@ -705,11 +770,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'totalCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'totalCount',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -718,11 +785,13 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'totalCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'totalCount',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -733,13 +802,15 @@ extension LitterQueryFilter on QueryBuilder<Litter, Litter, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'totalCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'totalCount',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -748,7 +819,8 @@ extension LitterQueryObject on QueryBuilder<Litter, Litter, QFilterCondition> {}
 
 extension LitterQueryLinks on QueryBuilder<Litter, Litter, QFilterCondition> {
   QueryBuilder<Litter, Litter, QAfterFilterCondition> line(
-      FilterQuery<Line> q) {
+    FilterQuery<Line> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'line');
     });
@@ -761,7 +833,8 @@ extension LitterQueryLinks on QueryBuilder<Litter, Litter, QFilterCondition> {
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> father(
-      FilterQuery<Fish> q) {
+    FilterQuery<Fish> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'father');
     });
@@ -774,7 +847,8 @@ extension LitterQueryLinks on QueryBuilder<Litter, Litter, QFilterCondition> {
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> mother(
-      FilterQuery<Fish> q) {
+    FilterQuery<Fish> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'mother');
     });
@@ -930,8 +1004,9 @@ extension LitterQueryWhereDistinct on QueryBuilder<Litter, Litter, QDistinct> {
     });
   }
 
-  QueryBuilder<Litter, Litter, QDistinct> distinctByGeneration(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Litter, Litter, QDistinct> distinctByGeneration({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'generation', caseSensitive: caseSensitive);
     });

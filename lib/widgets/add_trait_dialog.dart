@@ -1,19 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
-import '../main.dart';
+import '../databases/isar_service.dart';
 import '../models/models.dart';
 
-/// Показывает диалог, возвращает созданный Trait или null.
+/// Вызывает диалог добавления тега. 
+/// Возвращает созданный тег или null, если пользователь отменил ввод.
 Future<Trait?> showAddTraitDialog(BuildContext context) async {
-  final controller = TextEditingController();
-
-  final confirmed = await showDialog<bool>(
+  return showDialog<Trait>(
     context: context,
-    builder: (context) => AlertDialog(
+    builder: (context) => const AddTraitDialog(),
+  );
+}
+
+class AddTraitDialog extends StatefulWidget {
+  const AddTraitDialog({super.key});
+
+  @override
+  State<AddTraitDialog> createState() => _AddTraitDialogState();
+}
+
+class _AddTraitDialogState extends State<AddTraitDialog> {
+  // Контроллер теперь живет внутри State
+  final _controller = TextEditingController();
+  bool _saving = false;
+
+  @override
+  void dispose() {
+    _controller.dispose(); // Уничтожается строго при закрытии диалога
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    final name = _controller.text.trim();
+    if (name.isEmpty) return;
+
+    setState(() => _saving = true);
+
+    try {
+      final isar = IsarService.instance;
+
+      // Проверка на дубликат
+      final existing = await isar.traits.filter().nameEqualTo(name).findFirst();
+      if (existing != null) {
+        if (mounted) Navigator.pop(context, existing);
+        return;
+      }
+
+      // Вычисление порядка
+      final maxOrder = await isar.traits.where().sortBySortOrderDesc().findFirst();
+
+      final trait = Trait()
+        ..name = name
+        ..isBuiltIn = false
+        ..sortOrder = (maxOrder?.sortOrder ?? 0) + 1;
+
+      // Сохранение в БД
+      await isar.writeTxn(() async {
+        await isar.traits.put(trait);
+      });
+
+      if (mounted) Navigator.pop(context, trait);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ошибка: $e')),
+      );
+      setState(() => _saving = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
       title: const Text('Новый тег внешности'),
       content: TextField(
-        controller: controller,
+        controller: _controller,
         autofocus: true,
         textCapitalization: TextCapitalization.sentences,
         decoration: const InputDecoration(
@@ -21,39 +83,24 @@ Future<Trait?> showAddTraitDialog(BuildContext context) async {
           hintText: 'Например, «Панда»',
           border: OutlineInputBorder(),
         ),
-        onSubmitted: (_) => Navigator.pop(context, true),
+        onSubmitted: (_) => _save(),
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context, false),
+          onPressed: _saving ? null : () => Navigator.pop(context),
           child: const Text('Отмена'),
         ),
         FilledButton(
-          onPressed: () => Navigator.pop(context, true),
-          child: const Text('Добавить'),
+          onPressed: _saving ? null : _save,
+          child: _saving
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('Добавить'),
         ),
       ],
-    ),
-  );
-
-  final name = controller.text.trim();
-  controller.dispose();
-
-  if (confirmed != true || name.isEmpty) return null;
-
-  final existing = await isar.traits.filter().nameEqualTo(name).findFirst();
-  if (existing != null) return existing;
-
-  final maxOrder =
-      await isar.traits.where().sortBySortOrderDesc().findFirst();
-
-  final trait = Trait()
-    ..name = name
-    ..isBuiltIn = false
-    ..sortOrder = (maxOrder?.sortOrder ?? 0) + 1;
-
-  await isar.writeTxn(() async {
-    await isar.traits.put(trait);
-  });
-  return trait;
+    );
+  }
 }

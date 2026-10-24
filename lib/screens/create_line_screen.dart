@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../databases/isar_service.dart';
 import '../models/models.dart';
 
@@ -14,7 +13,7 @@ class _CreateLineScreenState extends State<CreateLineScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _targetTraitController = TextEditingController();
-
+  final isar = IsarService.instance; 
   bool _saving = false;
 
   @override
