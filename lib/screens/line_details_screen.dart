@@ -5,6 +5,7 @@ import '../databases/isar_service.dart';
 import '../models/models.dart';
 import 'add_litter_screen.dart';
 import 'add_fish_screen.dart';
+import 'fish_details_screen.dart';
 import '../utils/trait_label.dart';
 
 class LineDetailsScreen extends StatefulWidget {
@@ -349,6 +350,14 @@ class _FishSection extends StatelessWidget {
               color: theme.colorScheme.surfaceContainerHigh,
               margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FishDetailsScreen(fishId: f.id),
+                    ),
+                  );
+                },
                 leading: CircleAvatar(
                   backgroundColor: f.hasTargetTrait
                       ? theme.colorScheme.primaryContainer
