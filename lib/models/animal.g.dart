@@ -108,6 +108,12 @@ const AnimalSchema = CollectionSchema(
       target: r'Litter',
       single: true,
     ),
+    r'species': LinkSchema(
+      id: 8922518214292936434,
+      name: r'species',
+      target: r'Species',
+      single: true,
+    ),
   },
   embeddedSchemas: {},
 
@@ -212,7 +218,13 @@ Id _animalGetId(Animal object) {
 }
 
 List<IsarLinkBase<dynamic>> _animalGetLinks(Animal object) {
-  return [object.father, object.mother, object.line, object.originLitter];
+  return [
+    object.father,
+    object.mother,
+    object.line,
+    object.originLitter,
+    object.species,
+  ];
 }
 
 void _animalAttach(IsarCollection<dynamic> col, Id id, Animal object) {
@@ -226,6 +238,7 @@ void _animalAttach(IsarCollection<dynamic> col, Id id, Animal object) {
     r'originLitter',
     id,
   );
+  object.species.attach(col, col.isar.collection<Species>(), r'species', id);
 }
 
 extension AnimalByIndex on IsarCollection<Animal> {
@@ -1308,6 +1321,20 @@ extension AnimalQueryLinks on QueryBuilder<Animal, Animal, QFilterCondition> {
   QueryBuilder<Animal, Animal, QAfterFilterCondition> originLitterIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'originLitter', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> species(
+    FilterQuery<Species> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'species');
+    });
+  }
+
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> speciesIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'species', 0, true, 0, true);
     });
   }
 }

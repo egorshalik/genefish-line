@@ -49,7 +49,7 @@ class _LineDetailsScreenState extends State<LineDetailsScreen>
               controller: _tabController,
               tabs: const [
                 Tab(text: 'Журнал', icon: Icon(Icons.timeline)),
-                Tab(text: 'Рыбы', icon: Icon(Icons.set_meal_outlined)),
+                Tab(text: 'Животные', icon: Icon(Icons.set_meal_outlined)),
                 Tab(text: 'Статистика', icon: Icon(Icons.insights_outlined)),
               ],
             ),
@@ -204,10 +204,6 @@ class _LitterCard extends StatelessWidget {
   }
 }
 
-// ============================================================================
-// ВКЛАДКА 2 — РЫБЫ
-// ============================================================================
-
 class _AnimalTab extends StatelessWidget {
   final Line line;
 
@@ -241,7 +237,7 @@ class _AnimalTab extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(24),
                         child: Text(
-                          'В линии ещё нет рыб.\nДобавьте первого производителя!',
+                          'В линии ещё нет животных.\nДобавьте первого производителя!',
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -288,7 +284,7 @@ class _AnimalTab extends StatelessWidget {
                     );
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('Добавить рыбу'),
+                  label: const Text('Добавить животное'),
                   style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
                 ),
               ),
@@ -473,7 +469,7 @@ class _StatsTab extends StatelessWidget {
                 const SizedBox(height: 12),
                 _StatTile(
                   icon: Icons.set_meal_outlined,
-                  label: 'Рыб в линии',
+                  label: 'Животных в линии',
                   value: '${animals.length}',
                   caption: '${animals.where((f) => f.hasTargetTrait).length} '
                    '${traitWithGenitive(line)}',

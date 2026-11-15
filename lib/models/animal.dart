@@ -2,6 +2,7 @@ import 'package:isar_community/isar.dart';
 
 import 'line.dart';
 import 'litter.dart';
+import 'species.dart';
 
 part 'animal.g.dart';
 
@@ -32,6 +33,7 @@ class Animal {
   final line = IsarLink<Line>();
 
   final originLitter = IsarLink<Litter>();
-
+  final species = IsarLink<Species>();
+  
   Animal();
 }

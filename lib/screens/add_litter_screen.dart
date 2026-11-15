@@ -228,7 +228,7 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
               ),
               const SizedBox(height: 12),
               _CounterField(
-                label: 'Количество рыб с признаком «$trait»',
+                label: 'Количество животных с признаком «$trait»',
                 value: _targetCount,
                 onIncrement: _targetCount < _totalCount ? _incTarget : null,
                 onDecrement: _targetCount > 0 ? _decTarget : null,
@@ -466,7 +466,7 @@ class _ParentDropdown extends StatelessWidget {
         border: const OutlineInputBorder(),
         helperText: loading
             ? 'Загрузка…'
-            : (animals.isEmpty ? 'Нет доступных рыб этого пола' : null),
+            : (animals.isEmpty ? 'Нет доступных животных этого пола' : null),
       ),
       items: items,
       onChanged: loading ? null : onChanged,

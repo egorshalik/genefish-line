@@ -9,6 +9,7 @@ import '../models/models.dart';
 import '../utils/generation_utils.dart';
 import '../utils/trait_label.dart';
 import '../widgets/add_trait_dialog.dart';
+import '../services/species_repository.dart';
 
 class AddAnimalScreen extends StatefulWidget {
   final int lineId;
@@ -22,6 +23,7 @@ class AddAnimalScreen extends StatefulWidget {
 class _AddAnimalScreenState extends State<AddAnimalScreen> {
   final _formKey = GlobalKey<FormState>();
   final _customIdController = TextEditingController();
+  final _speciesController = TextEditingController();
   final _picker = ImagePicker();
 
   String? _selectedImagePath;
@@ -58,12 +60,20 @@ class _AddAnimalScreenState extends State<AddAnimalScreen> {
   @override
   void dispose() {
     _customIdController.dispose();
+    _speciesController.dispose();
     super.dispose();
   }
 
   Future<void> _loadLine() async {
     final line = await isar.lines.get(widget.lineId);
-    if (mounted) setState(() => _line = line);
+    if (mounted) {
+      setState(() {
+        _line = line;
+        if (line != null && line.species.value != null) {
+          _speciesController.text = line.species.value!.commonName;
+        }
+      });
+    }
   }
 
   // ===== Фото ===== (без изменений — см. предыдущий файл) =====
@@ -137,7 +147,7 @@ Future<void> _pickImage(ImageSource source) async {
     if (_gender == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Выберите пол рыбы'),
+          content: Text('Выберите пол животного'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -160,6 +170,16 @@ Future<void> _pickImage(ImageSource source) async {
       if (line == null) {
         throw StateError('Линия #${widget.lineId} не найдена');
       }
+      final speciesName = _speciesController.text.trim();
+      if (speciesName.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Укажите вид животного')),
+        );
+        setState(() => _saving = false);
+        return;
+      }
+
+      final species = await SpeciesRepository().getOrCreate(speciesName);
 
       final animal = Animal()
         ..customId = _customIdController.text.trim()
@@ -169,10 +189,12 @@ Future<void> _pickImage(ImageSource source) async {
         ..traits = _selectedTraits.toList()
         ..hasTargetTrait = _hasTargetTrait
         ..line.value = line;
+        animal.species.value = species; 
 
       await isar.writeTxn(() async {
         await isar.animals.put(animal);
         await animal.line.save();
+        await animal.species.save();
       });
 
       if (!mounted) return;
@@ -226,21 +248,31 @@ Future<void> _pickImage(ImageSource source) async {
                 ),
               const SizedBox(height: 16),
 
-              // Код рыбы
               TextFormField(
                 controller: _customIdController,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                  labelText: 'Код рыбы',
+                  labelText: 'Код животного',
                   hintText: 'F1-M-1',
                   prefixIcon: Icon(Icons.qr_code_2),
                   border: OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Введите код рыбы' : null,
+                    (v == null || v.trim().isEmpty) ? 'Введите код животного' : null,
               ),
               const SizedBox(height: 16),
-
+              TextFormField(
+                controller: _speciesController,
+                textInputAction: TextInputAction.next,
+                decoration: const InputDecoration(
+                  labelText: 'Вид животного',
+                  hintText: 'Например, «Гуппи» или «Кошка»',
+                  prefixIcon: Icon(Icons.pets),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (v) => (v == null || v.trim().isEmpty) ? 'Укажите вид' : null,
+              ),
+              const SizedBox(height: 16),
               // Пол
               Text('Пол', style: theme.textTheme.titleSmall),
               const SizedBox(height: 8),
@@ -388,7 +420,7 @@ Future<void> _pickImage(ImageSource source) async {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.save_outlined),
-            label: Text(_saving ? 'Сохранение…' : 'Сохранить рыбу'),
+            label: Text(_saving ? 'Сохранение…' : 'Сохранить животное'),
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
             ),
@@ -432,7 +464,7 @@ class _PhotoBlock extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Сделать фото рыбы',
+                      'Сделать фото животного',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),

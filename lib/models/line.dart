@@ -2,6 +2,7 @@ import 'package:isar_community/isar.dart';
 
 import 'animal.dart';
 import 'litter.dart';
+import 'species.dart';
 
 part 'line.g.dart';
 
@@ -19,6 +20,7 @@ class Line {
   DateTime startDate = DateTime.now();
 
   bool isCompleted = false;
+  final species = IsarLink<Species>();
 
   @Backlink(to: 'line')
   final animals = IsarLinks<Animal>();

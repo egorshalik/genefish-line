@@ -36,7 +36,7 @@ class AnimalDetailsScreen extends StatelessWidget {
                   final confirm = await showDialog<bool>(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Удалить рыбу?'),
+                      title: const Text('Удалить животное?'),
                       content: const Text('Это действие нельзя отменить.'),
                       actions: [
                         TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Отмена')),

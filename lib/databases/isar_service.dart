@@ -17,7 +17,7 @@ class IsarService {
 
     final dir = await getApplicationDocumentsDirectory();
     _isar = await Isar.open(
-      [LineSchema, AnimalSchema, LitterSchema, TraitSchema],
+      [LineSchema, AnimalSchema, LitterSchema, TraitSchema, SpeciesSchema],
       directory: dir.path,
       name: 'isar_db',
     );

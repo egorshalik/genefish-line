@@ -69,6 +69,12 @@ const LineSchema = CollectionSchema(
     ),
   },
   links: {
+    r'species': LinkSchema(
+      id: 7446015835947607300,
+      name: r'species',
+      target: r'Species',
+      single: true,
+    ),
     r'animals': LinkSchema(
       id: -6871391081462574137,
       name: r'animals',
@@ -155,11 +161,12 @@ Id _lineGetId(Line object) {
 }
 
 List<IsarLinkBase<dynamic>> _lineGetLinks(Line object) {
-  return [object.animals, object.litters];
+  return [object.species, object.animals, object.litters];
 }
 
 void _lineAttach(IsarCollection<dynamic> col, Id id, Line object) {
   object.id = id;
+  object.species.attach(col, col.isar.collection<Species>(), r'species', id);
   object.animals.attach(col, col.isar.collection<Animal>(), r'animals', id);
   object.litters.attach(col, col.isar.collection<Litter>(), r'litters', id);
 }
@@ -828,6 +835,20 @@ extension LineQueryFilter on QueryBuilder<Line, Line, QFilterCondition> {
 extension LineQueryObject on QueryBuilder<Line, Line, QFilterCondition> {}
 
 extension LineQueryLinks on QueryBuilder<Line, Line, QFilterCondition> {
+  QueryBuilder<Line, Line, QAfterFilterCondition> species(
+    FilterQuery<Species> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'species');
+    });
+  }
+
+  QueryBuilder<Line, Line, QAfterFilterCondition> speciesIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'species', 0, true, 0, true);
+    });
+  }
+
   QueryBuilder<Line, Line, QAfterFilterCondition> animals(
     FilterQuery<Animal> q,
   ) {

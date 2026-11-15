@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../databases/isar_service.dart';
 import '../models/models.dart';
+import '../services/species_repository.dart';
 
 class CreateLineScreen extends StatefulWidget {
   const CreateLineScreen({super.key});
@@ -13,6 +14,7 @@ class _CreateLineScreenState extends State<CreateLineScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _targetTraitController = TextEditingController();
+  final _speciesController = TextEditingController();
   final isar = IsarService.instance; 
   bool _saving = false;
 
@@ -20,6 +22,7 @@ class _CreateLineScreenState extends State<CreateLineScreen> {
   void dispose() {
     _nameController.dispose();
     _targetTraitController.dispose();
+    _speciesController.dispose();
     super.dispose();
   }
 
@@ -29,15 +32,29 @@ class _CreateLineScreenState extends State<CreateLineScreen> {
     setState(() => _saving = true);
 
     try {
+      final speciesName = _speciesController.text.trim();
+      if (speciesName.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Укажите вид животного')),
+        );
+        setState(() => _saving = false);
+        return;
+      }
+      
+      final speciesRepo = SpeciesRepository();
+      final species = await speciesRepo.getOrCreate(speciesName);
+
       final line = Line()
         ..name = _nameController.text.trim()
         ..targetTrait = _targetTraitController.text.trim()
         ..startDate = DateTime.now()
         ..isCompleted = false;
+      line.species.value = species;
 
       final isar = IsarService.instance;
       await isar.writeTxn(() async {
         await isar.lines.put(line);
+        await line.species.save();
       });
 
       if (!mounted) return;
@@ -106,6 +123,18 @@ class _CreateLineScreenState extends State<CreateLineScreen> {
                 ),
                 validator: (v) =>
                     (v == null || v.trim().isEmpty) ? 'Введите название' : null,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _speciesController,
+                textInputAction: TextInputAction.next,
+                decoration: const InputDecoration(
+                  labelText: 'Вид животного',
+                  hintText: 'Например, «Гуппи» или «Кошка»',
+                  prefixIcon: Icon(Icons.pets),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (v) => (v == null || v.trim().isEmpty) ? 'Укажите вид' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
