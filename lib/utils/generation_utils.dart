@@ -7,7 +7,7 @@ class GenerationUtils {
   static Future<List<String>> listForLine(int lineId) async {
     final isar = IsarService.instance;
     // Собираем все generation из рыб и помётов этой линии.
-    final fishGens = (await isar.fishs
+    final animalGens = (await isar.animals
             .filter()
             .line((q) => q.idEqualTo(lineId))
             .findAll())
@@ -19,7 +19,7 @@ class GenerationUtils {
             .findAll())
         .map((l) => l.generation);
 
-    final all = <String>{...fishGens, ...litterGens};
+    final all = <String>{...animalGens, ...litterGens};
 
     // Парсим F-номера.
     final fNumbers = <int>{};

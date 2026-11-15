@@ -74,13 +74,13 @@ const LitterSchema = CollectionSchema(
     r'father': LinkSchema(
       id: 4594081357830673670,
       name: r'father',
-      target: r'Fish',
+      target: r'Animal',
       single: true,
     ),
     r'mother': LinkSchema(
       id: -914835966556334609,
       name: r'mother',
-      target: r'Fish',
+      target: r'Animal',
       single: true,
     ),
   },
@@ -163,8 +163,8 @@ List<IsarLinkBase<dynamic>> _litterGetLinks(Litter object) {
 void _litterAttach(IsarCollection<dynamic> col, Id id, Litter object) {
   object.id = id;
   object.line.attach(col, col.isar.collection<Line>(), r'line', id);
-  object.father.attach(col, col.isar.collection<Fish>(), r'father', id);
-  object.mother.attach(col, col.isar.collection<Fish>(), r'mother', id);
+  object.father.attach(col, col.isar.collection<Animal>(), r'father', id);
+  object.mother.attach(col, col.isar.collection<Animal>(), r'mother', id);
 }
 
 extension LitterQueryWhereSort on QueryBuilder<Litter, Litter, QWhere> {
@@ -833,7 +833,7 @@ extension LitterQueryLinks on QueryBuilder<Litter, Litter, QFilterCondition> {
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> father(
-    FilterQuery<Fish> q,
+    FilterQuery<Animal> q,
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'father');
@@ -847,7 +847,7 @@ extension LitterQueryLinks on QueryBuilder<Litter, Litter, QFilterCondition> {
   }
 
   QueryBuilder<Litter, Litter, QAfterFilterCondition> mother(
-    FilterQuery<Fish> q,
+    FilterQuery<Animal> q,
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'mother');

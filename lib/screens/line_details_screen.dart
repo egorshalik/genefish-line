@@ -4,8 +4,8 @@ import 'package:isar_community/isar.dart';
 import '../databases/isar_service.dart';
 import '../models/models.dart';
 import 'add_litter_screen.dart';
-import 'add_fish_screen.dart';
-import 'fish_details_screen.dart';
+import 'add_animal_screen.dart';
+import 'animal_details_screen.dart';
 import '../utils/trait_label.dart';
 
 class LineDetailsScreen extends StatefulWidget {
@@ -60,7 +60,7 @@ class _LineDetailsScreenState extends State<LineDetailsScreen>
                   controller: _tabController,
                   children: [
                     _JournalTab(line: line),
-                    _FishTab(line: line),
+                    _AnimalTab(line: line),
                     _StatsTab(line: line),
                   ],
                 ),
@@ -208,16 +208,16 @@ class _LitterCard extends StatelessWidget {
 // ВКЛАДКА 2 — РЫБЫ
 // ============================================================================
 
-class _FishTab extends StatelessWidget {
+class _AnimalTab extends StatelessWidget {
   final Line line;
 
-  const _FishTab({required this.line});
+  const _AnimalTab({required this.line});
 
   @override
   Widget build(BuildContext context) {
     final isar = IsarService.instance;
-    return StreamBuilder<List<Fish>>(
-      stream: isar.fishs
+    return StreamBuilder<List<Animal>>(
+      stream: isar.animals
           .filter()
           .line((q) => q.idEqualTo(line.id))
           .watch(fireImmediately: true),
@@ -226,17 +226,17 @@ class _FishTab extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final fishes = snapshot.data!;
-        final males = fishes.where((f) => f.gender == Gender.male).toList();
-        final females = fishes.where((f) => f.gender == Gender.female).toList();
-        final others = fishes
+        final animals = snapshot.data!;
+        final males = animals.where((f) => f.gender == Gender.male).toList();
+        final females = animals.where((f) => f.gender == Gender.female).toList();
+        final others = animals
             .where((f) => f.gender != Gender.male && f.gender != Gender.female)
             .toList();
 
         return Column(
           children: [
             Expanded(
-              child: fishes.isEmpty
+              child: animals.isEmpty
                   ? const Center(
                       child: Padding(
                         padding: EdgeInsets.all(24),
@@ -249,25 +249,25 @@ class _FishTab extends StatelessWidget {
                   : ListView(
                       padding: const EdgeInsets.all(16),
                       children: [
-                        _FishSection(
+                        _AnimalSection(
                           title: 'Самцы',
                           icon: Icons.male,
-                          fishes: males,
+                          animals: males,
                           emptyText: 'Пока нет самцов',
                         ),
                         const SizedBox(height: 16),
-                        _FishSection(
+                        _AnimalSection(
                           title: 'Самки',
                           icon: Icons.female,
-                          fishes: females,
+                          animals: females,
                           emptyText: 'Пока нет самок',
                         ),
                         if (others.isNotEmpty) ...[
                           const SizedBox(height: 16),
-                          _FishSection(
+                          _AnimalSection(
                             title: 'Без пола / мальки',
                             icon: Icons.help_outline,
-                            fishes: others,
+                            animals: others,
                             emptyText: '—',
                           ),
                         ],
@@ -283,7 +283,7 @@ class _FishTab extends StatelessWidget {
                     await Navigator.push<bool>(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => AddFishScreen(lineId: line.id),
+                        builder: (_) => AddAnimalScreen(lineId: line.id),
                       ),
                     );
                   },
@@ -300,16 +300,16 @@ class _FishTab extends StatelessWidget {
   }
 }
 
-class _FishSection extends StatelessWidget {
+class _AnimalSection extends StatelessWidget {
   final String title;
   final IconData icon;
-  final List<Fish> fishes;
+  final List<Animal> animals;
   final String emptyText;
 
-  const _FishSection({
+  const _AnimalSection({
     required this.title,
     required this.icon,
-    required this.fishes,
+    required this.animals,
     required this.emptyText,
   });
 
@@ -325,7 +325,7 @@ class _FishSection extends StatelessWidget {
             Icon(icon, size: 18, color: theme.colorScheme.primary),
             const SizedBox(width: 6),
             Text(
-              '$title (${fishes.length})',
+              '$title (${animals.length})',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -333,7 +333,7 @@ class _FishSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        if (fishes.isEmpty)
+        if (animals.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
             child: Text(
@@ -344,7 +344,7 @@ class _FishSection extends StatelessWidget {
             ),
           )
         else
-          ...fishes.map(
+          ...animals.map(
             (f) => Card(
               elevation: 0,
               color: theme.colorScheme.surfaceContainerHigh,
@@ -354,7 +354,7 @@ class _FishSection extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => FishDetailsScreen(fishId: f.id),
+                      builder: (_) => AnimalDetailsScreen(animalId: f.id),
                     ),
                   );
                 },
@@ -403,21 +403,21 @@ class _StatsTab extends StatelessWidget {
           .line((q) => q.idEqualTo(line.id))
           .watch(fireImmediately: true),
       builder: (context, litterSnap) {
-        return StreamBuilder<List<Fish>>(
-          stream: isar.fishs
+        return StreamBuilder<List<Animal>>(
+          stream: isar.animals
               .filter()
               .line((q) => q.idEqualTo(line.id))
               .watch(fireImmediately: true),
-          builder: (context, fishSnap) {
-            if (!litterSnap.hasData || !fishSnap.hasData) {
+          builder: (context, animalSnap) {
+            if (!litterSnap.hasData || !animalSnap.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
 
             final litters = litterSnap.data!;
-            final fishes = fishSnap.data!;
+            final animals = animalSnap.data!;
 
             // Средний процент по всем помётам (взвешенный по totalCount).
-            final totalFish = litters.fold<int>(
+            final totalAnimal = litters.fold<int>(
               0,
               (sum, l) => sum + l.totalCount,
             );
@@ -426,7 +426,7 @@ class _StatsTab extends StatelessWidget {
               (sum, l) => sum + l.targetCount,
             );
             final avgPercent =
-                totalFish > 0 ? (totalTarget / totalFish) * 100 : 0.0;
+                totalAnimal > 0 ? (totalTarget / totalAnimal) * 100 : 0.0;
 
             final theme = Theme.of(context);
 
@@ -474,8 +474,8 @@ class _StatsTab extends StatelessWidget {
                 _StatTile(
                   icon: Icons.set_meal_outlined,
                   label: 'Рыб в линии',
-                  value: '${fishes.length}',
-                  caption: '${fishes.where((f) => f.hasTargetTrait).length} '
+                  value: '${animals.length}',
+                  caption: '${animals.where((f) => f.hasTargetTrait).length} '
                    '${traitWithGenitive(line)}',
                 ),
                 const SizedBox(height: 12),
@@ -483,8 +483,8 @@ class _StatsTab extends StatelessWidget {
                   icon: Icons.percent,
                   label: 'Средний процент проявления',
                   value: '${avgPercent.toStringAsFixed(1)} %',
-                  caption: totalFish > 0
-                      ? 'По $totalFish малькам из ${litters.length} помётов'
+                  caption: totalAnimal > 0
+                      ? 'По $totalAnimal малькам из ${litters.length} помётов'
                       : 'Пока нет данных о помётах',
                 ),
               ],

@@ -1,6 +1,6 @@
 import 'package:isar_community/isar.dart';
 
-import 'fish.dart';
+import 'animal.dart';
 import 'litter.dart';
 
 part 'line.g.dart';
@@ -21,7 +21,7 @@ class Line {
   bool isCompleted = false;
 
   @Backlink(to: 'line')
-  final fishes = IsarLinks<Fish>();
+  final animals = IsarLinks<Animal>();
 
   @Backlink(to: 'line')
   final litters = IsarLinks<Litter>();

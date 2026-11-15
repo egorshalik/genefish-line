@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'fish.dart';
+part of 'animal.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,13 +9,13 @@ part of 'fish.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types, experimental_member_use
 
-extension GetFishCollection on Isar {
-  IsarCollection<Fish> get fishs => this.collection();
+extension GetAnimalCollection on Isar {
+  IsarCollection<Animal> get animals => this.collection();
 }
 
-const FishSchema = CollectionSchema(
-  name: r'Fish',
-  id: -8462330926124391444,
+const AnimalSchema = CollectionSchema(
+  name: r'Animal',
+  id: 5509621733869852096,
   properties: {
     r'customId': PropertySchema(
       id: 0,
@@ -26,7 +26,7 @@ const FishSchema = CollectionSchema(
       id: 1,
       name: r'gender',
       type: IsarType.byte,
-      enumMap: _FishgenderEnumValueMap,
+      enumMap: _AnimalgenderEnumValueMap,
     ),
     r'generation': PropertySchema(
       id: 2,
@@ -50,10 +50,10 @@ const FishSchema = CollectionSchema(
     ),
   },
 
-  estimateSize: _fishEstimateSize,
-  serialize: _fishSerialize,
-  deserialize: _fishDeserialize,
-  deserializeProp: _fishDeserializeProp,
+  estimateSize: _animalEstimateSize,
+  serialize: _animalSerialize,
+  deserialize: _animalDeserialize,
+  deserializeProp: _animalDeserializeProp,
   idName: r'id',
   indexes: {
     r'customId': IndexSchema(
@@ -85,25 +85,25 @@ const FishSchema = CollectionSchema(
   },
   links: {
     r'father': LinkSchema(
-      id: -2739246060429714794,
+      id: -7397424448131510242,
       name: r'father',
-      target: r'Fish',
+      target: r'Animal',
       single: true,
     ),
     r'mother': LinkSchema(
-      id: -5016545872096262813,
+      id: -1861680017354833422,
       name: r'mother',
-      target: r'Fish',
+      target: r'Animal',
       single: true,
     ),
     r'line': LinkSchema(
-      id: -6690507729304574000,
+      id: -6538240621465727619,
       name: r'line',
       target: r'Line',
       single: true,
     ),
     r'originLitter': LinkSchema(
-      id: 5420932225626785972,
+      id: -5885195957907408067,
       name: r'originLitter',
       target: r'Litter',
       single: true,
@@ -111,14 +111,14 @@ const FishSchema = CollectionSchema(
   },
   embeddedSchemas: {},
 
-  getId: _fishGetId,
-  getLinks: _fishGetLinks,
-  attach: _fishAttach,
+  getId: _animalGetId,
+  getLinks: _animalGetLinks,
+  attach: _animalAttach,
   version: '3.4.1',
 );
 
-int _fishEstimateSize(
-  Fish object,
+int _animalEstimateSize(
+  Animal object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -141,8 +141,8 @@ int _fishEstimateSize(
   return bytesCount;
 }
 
-void _fishSerialize(
-  Fish object,
+void _animalSerialize(
+  Animal object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -155,16 +155,17 @@ void _fishSerialize(
   writer.writeStringList(offsets[5], object.traits);
 }
 
-Fish _fishDeserialize(
+Animal _animalDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Fish();
+  final object = Animal();
   object.customId = reader.readString(offsets[0]);
   object.gender =
-      _FishgenderValueEnumMap[reader.readByteOrNull(offsets[1])] ?? Gender.fry;
+      _AnimalgenderValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+      Gender.juvenile;
   object.generation = reader.readString(offsets[2]);
   object.hasTargetTrait = reader.readBool(offsets[3]);
   object.id = id;
@@ -173,7 +174,7 @@ Fish _fishDeserialize(
   return object;
 }
 
-P _fishDeserializeProp<P>(
+P _animalDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -183,8 +184,8 @@ P _fishDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (_FishgenderValueEnumMap[reader.readByteOrNull(offset)] ??
-              Gender.fry)
+      return (_AnimalgenderValueEnumMap[reader.readByteOrNull(offset)] ??
+              Gender.juvenile)
           as P;
     case 2:
       return (reader.readString(offset)) as P;
@@ -199,25 +200,25 @@ P _fishDeserializeProp<P>(
   }
 }
 
-const _FishgenderEnumValueMap = {'fry': 0, 'male': 1, 'female': 2};
-const _FishgenderValueEnumMap = {
-  0: Gender.fry,
+const _AnimalgenderEnumValueMap = {'juvenile': 0, 'male': 1, 'female': 2};
+const _AnimalgenderValueEnumMap = {
+  0: Gender.juvenile,
   1: Gender.male,
   2: Gender.female,
 };
 
-Id _fishGetId(Fish object) {
+Id _animalGetId(Animal object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _fishGetLinks(Fish object) {
+List<IsarLinkBase<dynamic>> _animalGetLinks(Animal object) {
   return [object.father, object.mother, object.line, object.originLitter];
 }
 
-void _fishAttach(IsarCollection<dynamic> col, Id id, Fish object) {
+void _animalAttach(IsarCollection<dynamic> col, Id id, Animal object) {
   object.id = id;
-  object.father.attach(col, col.isar.collection<Fish>(), r'father', id);
-  object.mother.attach(col, col.isar.collection<Fish>(), r'mother', id);
+  object.father.attach(col, col.isar.collection<Animal>(), r'father', id);
+  object.mother.attach(col, col.isar.collection<Animal>(), r'mother', id);
   object.line.attach(col, col.isar.collection<Line>(), r'line', id);
   object.originLitter.attach(
     col,
@@ -227,12 +228,12 @@ void _fishAttach(IsarCollection<dynamic> col, Id id, Fish object) {
   );
 }
 
-extension FishByIndex on IsarCollection<Fish> {
-  Future<Fish?> getByCustomId(String customId) {
+extension AnimalByIndex on IsarCollection<Animal> {
+  Future<Animal?> getByCustomId(String customId) {
     return getByIndex(r'customId', [customId]);
   }
 
-  Fish? getByCustomIdSync(String customId) {
+  Animal? getByCustomIdSync(String customId) {
     return getByIndexSync(r'customId', [customId]);
   }
 
@@ -244,12 +245,12 @@ extension FishByIndex on IsarCollection<Fish> {
     return deleteByIndexSync(r'customId', [customId]);
   }
 
-  Future<List<Fish?>> getAllByCustomId(List<String> customIdValues) {
+  Future<List<Animal?>> getAllByCustomId(List<String> customIdValues) {
     final values = customIdValues.map((e) => [e]).toList();
     return getAllByIndex(r'customId', values);
   }
 
-  List<Fish?> getAllByCustomIdSync(List<String> customIdValues) {
+  List<Animal?> getAllByCustomIdSync(List<String> customIdValues) {
     final values = customIdValues.map((e) => [e]).toList();
     return getAllByIndexSync(r'customId', values);
   }
@@ -264,39 +265,39 @@ extension FishByIndex on IsarCollection<Fish> {
     return deleteAllByIndexSync(r'customId', values);
   }
 
-  Future<Id> putByCustomId(Fish object) {
+  Future<Id> putByCustomId(Animal object) {
     return putByIndex(r'customId', object);
   }
 
-  Id putByCustomIdSync(Fish object, {bool saveLinks = true}) {
+  Id putByCustomIdSync(Animal object, {bool saveLinks = true}) {
     return putByIndexSync(r'customId', object, saveLinks: saveLinks);
   }
 
-  Future<List<Id>> putAllByCustomId(List<Fish> objects) {
+  Future<List<Id>> putAllByCustomId(List<Animal> objects) {
     return putAllByIndex(r'customId', objects);
   }
 
-  List<Id> putAllByCustomIdSync(List<Fish> objects, {bool saveLinks = true}) {
+  List<Id> putAllByCustomIdSync(List<Animal> objects, {bool saveLinks = true}) {
     return putAllByIndexSync(r'customId', objects, saveLinks: saveLinks);
   }
 }
 
-extension FishQueryWhereSort on QueryBuilder<Fish, Fish, QWhere> {
-  QueryBuilder<Fish, Fish, QAfterWhere> anyId() {
+extension AnimalQueryWhereSort on QueryBuilder<Animal, Animal, QWhere> {
+  QueryBuilder<Animal, Animal, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
-  QueryBuilder<Fish, Fish, QAfterWhereClause> idEqualTo(Id id) {
+extension AnimalQueryWhere on QueryBuilder<Animal, Animal, QWhereClause> {
+  QueryBuilder<Animal, Animal, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<Animal, Animal, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -318,7 +319,7 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> idGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterWhereClause> idGreaterThan(
     Id id, {
     bool include = false,
   }) {
@@ -329,7 +330,7 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> idLessThan(
+  QueryBuilder<Animal, Animal, QAfterWhereClause> idLessThan(
     Id id, {
     bool include = false,
   }) {
@@ -340,7 +341,7 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> idBetween(
+  QueryBuilder<Animal, Animal, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -358,7 +359,9 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> customIdEqualTo(String customId) {
+  QueryBuilder<Animal, Animal, QAfterWhereClause> customIdEqualTo(
+    String customId,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IndexWhereClause.equalTo(indexName: r'customId', value: [customId]),
@@ -366,7 +369,7 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> customIdNotEqualTo(
+  QueryBuilder<Animal, Animal, QAfterWhereClause> customIdNotEqualTo(
     String customId,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -410,7 +413,7 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> generationEqualTo(
+  QueryBuilder<Animal, Animal, QAfterWhereClause> generationEqualTo(
     String generation,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -420,7 +423,7 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterWhereClause> generationNotEqualTo(
+  QueryBuilder<Animal, Animal, QAfterWhereClause> generationNotEqualTo(
     String generation,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -465,8 +468,8 @@ extension FishQueryWhere on QueryBuilder<Fish, Fish, QWhereClause> {
   }
 }
 
-extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdEqualTo(
+extension AnimalQueryFilter on QueryBuilder<Animal, Animal, QFilterCondition> {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -481,7 +484,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -498,7 +501,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -515,7 +518,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -536,7 +539,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdStartsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -551,7 +554,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdEndsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -566,7 +569,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdContains(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdContains(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -581,7 +584,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdMatches(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdMatches(
     String pattern, {
     bool caseSensitive = true,
   }) {
@@ -596,7 +599,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdIsEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'customId', value: ''),
@@ -604,7 +607,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> customIdIsNotEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> customIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'customId', value: ''),
@@ -612,7 +615,9 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> genderEqualTo(Gender value) {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> genderEqualTo(
+    Gender value,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'gender', value: value),
@@ -620,7 +625,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> genderGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> genderGreaterThan(
     Gender value, {
     bool include = false,
   }) {
@@ -635,7 +640,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> genderLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> genderLessThan(
     Gender value, {
     bool include = false,
   }) {
@@ -650,7 +655,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> genderBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> genderBetween(
     Gender lower,
     Gender upper, {
     bool includeLower = true,
@@ -669,7 +674,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationEqualTo(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -684,7 +689,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -701,7 +706,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -718,7 +723,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -739,7 +744,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationStartsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -754,7 +759,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationEndsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -769,7 +774,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationContains(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationContains(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -784,7 +789,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationMatches(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationMatches(
     String pattern, {
     bool caseSensitive = true,
   }) {
@@ -799,7 +804,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationIsEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'generation', value: ''),
@@ -807,7 +812,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> generationIsNotEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> generationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'generation', value: ''),
@@ -815,7 +820,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> hasTargetTraitEqualTo(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> hasTargetTraitEqualTo(
     bool value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -825,7 +830,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'id', value: value),
@@ -833,7 +838,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -848,7 +853,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> idLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -863,7 +868,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> idBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -882,7 +887,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathIsNull() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const FilterCondition.isNull(property: r'photoPath'),
@@ -890,7 +895,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathIsNotNull() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const FilterCondition.isNotNull(property: r'photoPath'),
@@ -898,7 +903,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathEqualTo(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -913,7 +918,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -930,7 +935,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -947,7 +952,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -968,7 +973,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathStartsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -983,7 +988,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathEndsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -998,7 +1003,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathContains(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathContains(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1013,7 +1018,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathMatches(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathMatches(
     String pattern, {
     bool caseSensitive = true,
   }) {
@@ -1028,7 +1033,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathIsEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'photoPath', value: ''),
@@ -1036,7 +1041,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> photoPathIsNotEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> photoPathIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'photoPath', value: ''),
@@ -1044,7 +1049,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementEqualTo(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1059,7 +1064,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1076,7 +1081,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1093,7 +1098,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1114,7 +1119,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementStartsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1129,7 +1134,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementEndsWith(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1144,7 +1149,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementContains(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementContains(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1159,7 +1164,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementMatches(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementMatches(
     String pattern, {
     bool caseSensitive = true,
   }) {
@@ -1174,7 +1179,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementIsEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsElementIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'traits', value: ''),
@@ -1182,7 +1187,8 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsElementIsNotEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition>
+  traitsElementIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'traits', value: ''),
@@ -1190,7 +1196,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsLengthEqualTo(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsLengthEqualTo(
     int length,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1198,19 +1204,19 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsIsEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(r'traits', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsIsNotEmpty() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(r'traits', 0, false, 999999, true);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsLengthLessThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsLengthLessThan(
     int length, {
     bool include = false,
   }) {
@@ -1219,7 +1225,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsLengthGreaterThan(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
@@ -1228,7 +1234,7 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> traitsLengthBetween(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> traitsLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1246,46 +1252,52 @@ extension FishQueryFilter on QueryBuilder<Fish, Fish, QFilterCondition> {
   }
 }
 
-extension FishQueryObject on QueryBuilder<Fish, Fish, QFilterCondition> {}
+extension AnimalQueryObject on QueryBuilder<Animal, Animal, QFilterCondition> {}
 
-extension FishQueryLinks on QueryBuilder<Fish, Fish, QFilterCondition> {
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> father(FilterQuery<Fish> q) {
+extension AnimalQueryLinks on QueryBuilder<Animal, Animal, QFilterCondition> {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> father(
+    FilterQuery<Animal> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'father');
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> fatherIsNull() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> fatherIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'father', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> mother(FilterQuery<Fish> q) {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> mother(
+    FilterQuery<Animal> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'mother');
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> motherIsNull() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> motherIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'mother', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> line(FilterQuery<Line> q) {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> line(
+    FilterQuery<Line> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'line');
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> lineIsNull() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> lineIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'line', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> originLitter(
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> originLitter(
     FilterQuery<Litter> q,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1293,151 +1305,151 @@ extension FishQueryLinks on QueryBuilder<Fish, Fish, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterFilterCondition> originLitterIsNull() {
+  QueryBuilder<Animal, Animal, QAfterFilterCondition> originLitterIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'originLitter', 0, true, 0, true);
     });
   }
 }
 
-extension FishQuerySortBy on QueryBuilder<Fish, Fish, QSortBy> {
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByCustomId() {
+extension AnimalQuerySortBy on QueryBuilder<Animal, Animal, QSortBy> {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByCustomId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customId', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByCustomIdDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByCustomIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customId', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByGender() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByGenderDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByGenderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByGeneration() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByGeneration() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'generation', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByGenerationDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByGenerationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'generation', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByHasTargetTrait() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByHasTargetTrait() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasTargetTrait', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByHasTargetTraitDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByHasTargetTraitDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasTargetTrait', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByPhotoPath() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByPhotoPath() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoPath', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> sortByPhotoPathDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> sortByPhotoPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoPath', Sort.desc);
     });
   }
 }
 
-extension FishQuerySortThenBy on QueryBuilder<Fish, Fish, QSortThenBy> {
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByCustomId() {
+extension AnimalQuerySortThenBy on QueryBuilder<Animal, Animal, QSortThenBy> {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByCustomId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customId', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByCustomIdDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByCustomIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customId', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByGender() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByGenderDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByGenderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByGeneration() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByGeneration() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'generation', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByGenerationDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByGenerationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'generation', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByHasTargetTrait() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByHasTargetTrait() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasTargetTrait', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByHasTargetTraitDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByHasTargetTraitDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasTargetTrait', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenById() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByPhotoPath() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByPhotoPath() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoPath', Sort.asc);
     });
   }
 
-  QueryBuilder<Fish, Fish, QAfterSortBy> thenByPhotoPathDesc() {
+  QueryBuilder<Animal, Animal, QAfterSortBy> thenByPhotoPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoPath', Sort.desc);
     });
   }
 }
 
-extension FishQueryWhereDistinct on QueryBuilder<Fish, Fish, QDistinct> {
-  QueryBuilder<Fish, Fish, QDistinct> distinctByCustomId({
+extension AnimalQueryWhereDistinct on QueryBuilder<Animal, Animal, QDistinct> {
+  QueryBuilder<Animal, Animal, QDistinct> distinctByCustomId({
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1445,13 +1457,13 @@ extension FishQueryWhereDistinct on QueryBuilder<Fish, Fish, QDistinct> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QDistinct> distinctByGender() {
+  QueryBuilder<Animal, Animal, QDistinct> distinctByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'gender');
     });
   }
 
-  QueryBuilder<Fish, Fish, QDistinct> distinctByGeneration({
+  QueryBuilder<Animal, Animal, QDistinct> distinctByGeneration({
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1459,13 +1471,13 @@ extension FishQueryWhereDistinct on QueryBuilder<Fish, Fish, QDistinct> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QDistinct> distinctByHasTargetTrait() {
+  QueryBuilder<Animal, Animal, QDistinct> distinctByHasTargetTrait() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hasTargetTrait');
     });
   }
 
-  QueryBuilder<Fish, Fish, QDistinct> distinctByPhotoPath({
+  QueryBuilder<Animal, Animal, QDistinct> distinctByPhotoPath({
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1473,51 +1485,51 @@ extension FishQueryWhereDistinct on QueryBuilder<Fish, Fish, QDistinct> {
     });
   }
 
-  QueryBuilder<Fish, Fish, QDistinct> distinctByTraits() {
+  QueryBuilder<Animal, Animal, QDistinct> distinctByTraits() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'traits');
     });
   }
 }
 
-extension FishQueryProperty on QueryBuilder<Fish, Fish, QQueryProperty> {
-  QueryBuilder<Fish, int, QQueryOperations> idProperty() {
+extension AnimalQueryProperty on QueryBuilder<Animal, Animal, QQueryProperty> {
+  QueryBuilder<Animal, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<Fish, String, QQueryOperations> customIdProperty() {
+  QueryBuilder<Animal, String, QQueryOperations> customIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'customId');
     });
   }
 
-  QueryBuilder<Fish, Gender, QQueryOperations> genderProperty() {
+  QueryBuilder<Animal, Gender, QQueryOperations> genderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gender');
     });
   }
 
-  QueryBuilder<Fish, String, QQueryOperations> generationProperty() {
+  QueryBuilder<Animal, String, QQueryOperations> generationProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'generation');
     });
   }
 
-  QueryBuilder<Fish, bool, QQueryOperations> hasTargetTraitProperty() {
+  QueryBuilder<Animal, bool, QQueryOperations> hasTargetTraitProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hasTargetTrait');
     });
   }
 
-  QueryBuilder<Fish, String?, QQueryOperations> photoPathProperty() {
+  QueryBuilder<Animal, String?, QQueryOperations> photoPathProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'photoPath');
     });
   }
 
-  QueryBuilder<Fish, List<String>, QQueryOperations> traitsProperty() {
+  QueryBuilder<Animal, List<String>, QQueryOperations> traitsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'traits');
     });

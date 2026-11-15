@@ -3,15 +3,14 @@ import 'package:isar_community/isar.dart';
 import 'line.dart';
 import 'litter.dart';
 
-part 'fish.g.dart';
+part 'animal.g.dart';
 
-enum Gender { fry, male, female }
+enum Gender { juvenile, male, female }
 
 @Collection()
-class Fish {
+class Animal {
   Id id = Isar.autoIncrement;
 
-  /// Человекочитаемый ID, например F1-M-1
   @Index(unique: true, replace: false)
   String customId = '';
 
@@ -19,23 +18,20 @@ class Fish {
   String generation = 'P';
 
   @Enumerated(EnumType.ordinal)
-  Gender gender = Gender.fry;
+  Gender gender = Gender.juvenile;
 
   String? photoPath;
 
   List<String> traits = [];
 
-  bool hasTargetTrait  = false;
+  bool hasTargetTrait = false;
 
-  // Генеалогия
-  final father = IsarLink<Fish>();
-  final mother = IsarLink<Fish>();
+  final father = IsarLink<Animal>();
+  final mother = IsarLink<Animal>();
 
-  // Принадлежность
   final line = IsarLink<Line>();
 
-  // Из какого помёта (опционально)
   final originLitter = IsarLink<Litter>();
 
-  Fish();
+  Animal();
 }

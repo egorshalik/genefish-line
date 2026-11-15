@@ -24,12 +24,12 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
   int _totalCount = 0;
   int _targetCount = 0;
 
-  Fish? _selectedFather;
-  Fish? _selectedMother;
+  Animal? _selectedFather;
+  Animal? _selectedMother;
   Line? _line;
 
-  late Future<List<Fish>> _malesFuture;
-  late Future<List<Fish>> _femalesFuture;
+  late Future<List<Animal>> _malesFuture;
+  late Future<List<Animal>> _femalesFuture;
   late Future<List<String>> _generationsFuture;
   final isar = IsarService.instance; 
   bool _saving = false;
@@ -37,8 +37,8 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
   @override
   void initState() {
     super.initState();
-    _malesFuture = _loadFish(Gender.male);
-    _femalesFuture = _loadFish(Gender.female);
+    _malesFuture = _loadAnimal(Gender.male);
+    _femalesFuture = _loadAnimal(Gender.female);
     _loadLine();
     _generationsFuture = GenerationUtils.listForLine(widget.lineId);
   }
@@ -48,8 +48,8 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
     if (mounted) setState(() => _line = line);
   }
 
-  Future<List<Fish>> _loadFish(Gender gender) {
-    return isar.fishs
+  Future<List<Animal>> _loadAnimal(Gender gender) {
+    return isar.animals
         .filter()
         .line((q) => q.idEqualTo(widget.lineId))
         .genderEqualTo(gender)
@@ -257,13 +257,13 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
               Text('Родители (необязательно)',
                   style: theme.textTheme.titleSmall),
               const SizedBox(height: 8),
-              FutureBuilder<List<Fish>>(
+              FutureBuilder<List<Animal>>(
                 future: _malesFuture,
                 builder: (context, snap) {
                   return _ParentDropdown(
                     label: 'Отец (самец)',
                     icon: Icons.male,
-                    fishes: snap.data ?? const [],
+                    animals: snap.data ?? const [],
                     value: _selectedFather,
                     loading:
                         snap.connectionState == ConnectionState.waiting,
@@ -272,13 +272,13 @@ class _AddLitterScreenState extends State<AddLitterScreen> {
                 },
               ),
               const SizedBox(height: 12),
-              FutureBuilder<List<Fish>>(
+              FutureBuilder<List<Animal>>(
                 future: _femalesFuture,
                 builder: (context, snap) {
                   return _ParentDropdown(
                     label: 'Мать (самка)',
                     icon: Icons.female,
-                    fishes: snap.data ?? const [],
+                    animals: snap.data ?? const [],
                     value: _selectedMother,
                     loading:
                         snap.connectionState == ConnectionState.waiting,
@@ -426,15 +426,15 @@ class _CounterField extends StatelessWidget {
 class _ParentDropdown extends StatelessWidget {
   final String label;
   final IconData icon;
-  final List<Fish> fishes;
-  final Fish? value;
+  final List<Animal> animals;
+  final Animal? value;
   final bool loading;
-  final ValueChanged<Fish?> onChanged;
+  final ValueChanged<Animal?> onChanged;
 
   const _ParentDropdown({
     required this.label,
     required this.icon,
-    required this.fishes,
+    required this.animals,
     required this.value,
     required this.loading,
     required this.onChanged,
@@ -442,22 +442,22 @@ class _ParentDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = <DropdownMenuItem<Fish>>[
-      const DropdownMenuItem<Fish>(
+    final items = <DropdownMenuItem<Animal>>[
+      const DropdownMenuItem<Animal>(
         value: null,
         child: Text('— не выбран —'),
       ),
-      ...fishes.map(
-        (f) => DropdownMenuItem<Fish>(
+      ...animals.map(
+        (f) => DropdownMenuItem<Animal>(
           value: f,
           child: Text('${f.customId} · ${f.generation}'),
         ),
       ),
     ];
     final safeValue =
-        fishes.any((f) => f.id == value?.id) ? value : null;
+        animals.any((f) => f.id == value?.id) ? value : null;
 
-    return DropdownButtonFormField<Fish>(
+    return DropdownButtonFormField<Animal>(
       initialValue: safeValue,
       isExpanded: true,
       decoration: InputDecoration(
@@ -466,7 +466,7 @@ class _ParentDropdown extends StatelessWidget {
         border: const OutlineInputBorder(),
         helperText: loading
             ? 'Загрузка…'
-            : (fishes.isEmpty ? 'Нет доступных рыб этого пола' : null),
+            : (animals.isEmpty ? 'Нет доступных рыб этого пола' : null),
       ),
       items: items,
       onChanged: loading ? null : onChanged,

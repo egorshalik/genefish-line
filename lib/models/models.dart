@@ -1,4 +1,4 @@
 export 'line.dart';
-export 'fish.dart';
+export 'animal.dart';
 export 'litter.dart';
 export 'trait.dart';

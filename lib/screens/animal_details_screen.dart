@@ -5,20 +5,20 @@ import 'package:isar_community/isar.dart';
 import '../models/models.dart';
 import '../databases/isar_service.dart';
 
-class FishDetailsScreen extends StatelessWidget {
-  final int fishId;
+class AnimalDetailsScreen extends StatelessWidget {
+  final int animalId;
 
-  const FishDetailsScreen({super.key, required this.fishId});
+  const AnimalDetailsScreen({super.key, required this.animalId});
 
   @override
   Widget build(BuildContext context) {
     final isar = IsarService.instance; 
-    return StreamBuilder<Fish?>(
-      stream: isar.fishs.watchObject(fishId, fireImmediately: true),
+    return StreamBuilder<Animal?>(
+      stream: isar.animals.watchObject(animalId, fireImmediately: true),
       builder: (context, snapshot) {
-        final fish = snapshot.data;
+        final animal = snapshot.data;
         
-        if (fish == null) {
+        if (animal == null) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
@@ -28,7 +28,7 @@ class FishDetailsScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(fish.customId),
+            title: Text(animal.customId),
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete_outline, color: Colors.red),
@@ -51,7 +51,7 @@ class FishDetailsScreen extends StatelessWidget {
                   
                   if (confirm == true) {
                     await isar.writeTxn(() async {
-                      await isar.fishs.delete(fish.id);
+                      await isar.animals.delete(animal.id);
                     });
                     if (context.mounted) Navigator.pop(context);
                   }
@@ -63,23 +63,23 @@ class FishDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             children: [
               // 1. ФОТО
-              _buildPhoto(fish, theme),
+              _buildPhoto(animal, theme),
               const SizedBox(height: 16),
 
               // 2. ОСНОВНАЯ ИНФОРМАЦИЯ
-              _buildMainInfo(fish, theme),
+              _buildMainInfo(animal, theme),
               const SizedBox(height: 16),
 
               // 3. ТЕГИ
               Text('Теги внешности', style: theme.textTheme.titleMedium),
               const SizedBox(height: 8),
-              if (fish.traits.isEmpty)
+              if (animal.traits.isEmpty)
                 Text('Теги не указаны', style: TextStyle(color: theme.colorScheme.onSurfaceVariant))
               else
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: fish.traits.map((t) => Chip(label: Text(t))).toList(),
+                  children: animal.traits.map((t) => Chip(label: Text(t))).toList(),
                 ),
               const SizedBox(height: 24),
 
@@ -88,8 +88,8 @@ class FishDetailsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               FutureBuilder(
                 future: Future.wait([
-                  _loadParent(fish.father),
-                  _loadParent(fish.mother),
+                  _loadParent(animal.father),
+                  _loadParent(animal.mother),
                 ]),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const LinearProgressIndicator();
@@ -113,19 +113,19 @@ class FishDetailsScreen extends StatelessWidget {
     );
   }
 
-  Future<Fish?> _loadParent(IsarLink<Fish> link) async {
+  Future<Animal?> _loadParent(IsarLink<Animal> link) async {
     // Сначала загружаем данные из БД
     await link.load();
     // Затем возвращаем значение
     return link.value;
   }
 
-  Widget _buildPhoto(Fish fish, ThemeData theme) {
-    if (fish.photoPath != null && File(fish.photoPath!).existsSync()) {
+  Widget _buildPhoto(Animal animal, ThemeData theme) {
+    if (animal.photoPath != null && File(animal.photoPath!).existsSync()) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: Image.file(
-          File(fish.photoPath!),
+          File(animal.photoPath!),
           height: 250,
           width: double.infinity,
           fit: BoxFit.cover,
@@ -144,10 +144,10 @@ class FishDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMainInfo(Fish fish, ThemeData theme) {
+  Widget _buildMainInfo(Animal animal, ThemeData theme) {
     return Card(
       elevation: 0,
-      color: fish.hasTargetTrait 
+      color: animal.hasTargetTrait 
           ? theme.colorScheme.primaryContainer 
           : theme.colorScheme.surfaceContainerHigh,
       child: Padding(
@@ -158,12 +158,12 @@ class FishDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Поколение: ${fish.generation}', style: theme.textTheme.titleLarge),
+                Text('Поколение: ${animal.generation}', style: theme.textTheme.titleLarge),
                 Chip(
-                  label: Text(fish.gender == Gender.male ? 'Самец' : (fish.gender == Gender.female ? 'Самка' : 'Неизвестно')),
+                  label: Text(animal.gender == Gender.male ? 'Самец' : (animal.gender == Gender.female ? 'Самка' : 'Неизвестно')),
                   avatar: Icon(
-                    fish.gender == Gender.male ? Icons.male : Icons.female,
-                    color: fish.gender == Gender.male ? Colors.blue : Colors.pink,
+                    animal.gender == Gender.male ? Icons.male : Icons.female,
+                    color: animal.gender == Gender.male ? Colors.blue : Colors.pink,
                     size: 18,
                   ),
                 ),
@@ -174,14 +174,14 @@ class FishDetailsScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.bolt, 
-                  color: fish.hasTargetTrait ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant
+                  color: animal.hasTargetTrait ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  fish.hasTargetTrait ? 'Обладает целевым признаком' : 'Без целевого признака',
+                  animal.hasTargetTrait ? 'Обладает целевым признаком' : 'Без целевого признака',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: fish.hasTargetTrait ? theme.colorScheme.primary : null,
-                    fontWeight: fish.hasTargetTrait ? FontWeight.bold : null,
+                    color: animal.hasTargetTrait ? theme.colorScheme.primary : null,
+                    fontWeight: animal.hasTargetTrait ? FontWeight.bold : null,
                   ),
                 ),
               ],
@@ -193,7 +193,7 @@ class FishDetailsScreen extends StatelessWidget {
   }
 
   // Универсальный виджет для карточки родителя
-  Widget _buildParentTile(BuildContext context, String label, Fish? parent, IconData icon, Color color) {
+  Widget _buildParentTile(BuildContext context, String label, Animal? parent, IconData icon, Color color) {
     final theme = Theme.of(context);
     
     if (parent == null) {
@@ -213,7 +213,7 @@ class FishDetailsScreen extends StatelessWidget {
           // Переходим на карточку родителя
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => FishDetailsScreen(fishId: parent.id)),
+            MaterialPageRoute(builder: (_) => AnimalDetailsScreen(animalId: parent.id)),
           );
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

@@ -10,16 +10,16 @@ import '../utils/generation_utils.dart';
 import '../utils/trait_label.dart';
 import '../widgets/add_trait_dialog.dart';
 
-class AddFishScreen extends StatefulWidget {
+class AddAnimalScreen extends StatefulWidget {
   final int lineId;
 
-  const AddFishScreen({super.key, required this.lineId});
+  const AddAnimalScreen({super.key, required this.lineId});
 
   @override
-  State<AddFishScreen> createState() => _AddFishScreenState();
+  State<AddAnimalScreen> createState() => _AddAnimalScreenState();
 }
 
-class _AddFishScreenState extends State<AddFishScreen> {
+class _AddAnimalScreenState extends State<AddAnimalScreen> {
   final _formKey = GlobalKey<FormState>();
   final _customIdController = TextEditingController();
   final _picker = ImagePicker();
@@ -161,7 +161,7 @@ Future<void> _pickImage(ImageSource source) async {
         throw StateError('Линия #${widget.lineId} не найдена');
       }
 
-      final fish = Fish()
+      final animal = Animal()
         ..customId = _customIdController.text.trim()
         ..generation = _generation!
         ..gender = _gender!
@@ -171,8 +171,8 @@ Future<void> _pickImage(ImageSource source) async {
         ..line.value = line;
 
       await isar.writeTxn(() async {
-        await isar.fishs.put(fish);
-        await fish.line.save();
+        await isar.animals.put(animal);
+        await animal.line.save();
       });
 
       if (!mounted) return;

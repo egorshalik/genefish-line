@@ -1,6 +1,6 @@
 import 'package:isar_community/isar.dart';
 
-import 'fish.dart';
+import 'animal.dart';
 import 'line.dart';
 
 part 'litter.g.dart';
@@ -21,8 +21,8 @@ class Litter {
       totalCount > 0 ? (targetCount  / totalCount) * 100 : 0.0;
 
   final line = IsarLink<Line>();
-  final father = IsarLink<Fish>();
-  final mother = IsarLink<Fish>();
+  final father = IsarLink<Animal>();
+  final mother = IsarLink<Animal>();
 
   Litter();
 }

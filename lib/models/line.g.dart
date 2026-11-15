@@ -69,10 +69,10 @@ const LineSchema = CollectionSchema(
     ),
   },
   links: {
-    r'fishes': LinkSchema(
-      id: 3221066061150803149,
-      name: r'fishes',
-      target: r'Fish',
+    r'animals': LinkSchema(
+      id: -6871391081462574137,
+      name: r'animals',
+      target: r'Animal',
       single: false,
       linkName: r'line',
     ),
@@ -155,12 +155,12 @@ Id _lineGetId(Line object) {
 }
 
 List<IsarLinkBase<dynamic>> _lineGetLinks(Line object) {
-  return [object.fishes, object.litters];
+  return [object.animals, object.litters];
 }
 
 void _lineAttach(IsarCollection<dynamic> col, Id id, Line object) {
   object.id = id;
-  object.fishes.attach(col, col.isar.collection<Fish>(), r'fishes', id);
+  object.animals.attach(col, col.isar.collection<Animal>(), r'animals', id);
   object.litters.attach(col, col.isar.collection<Litter>(), r'litters', id);
 }
 
@@ -828,51 +828,53 @@ extension LineQueryFilter on QueryBuilder<Line, Line, QFilterCondition> {
 extension LineQueryObject on QueryBuilder<Line, Line, QFilterCondition> {}
 
 extension LineQueryLinks on QueryBuilder<Line, Line, QFilterCondition> {
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishes(FilterQuery<Fish> q) {
+  QueryBuilder<Line, Line, QAfterFilterCondition> animals(
+    FilterQuery<Animal> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'fishes');
+      return query.link(q, r'animals');
     });
   }
 
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishesLengthEqualTo(
+  QueryBuilder<Line, Line, QAfterFilterCondition> animalsLengthEqualTo(
     int length,
   ) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'fishes', length, true, length, true);
+      return query.linkLength(r'animals', length, true, length, true);
     });
   }
 
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishesIsEmpty() {
+  QueryBuilder<Line, Line, QAfterFilterCondition> animalsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'fishes', 0, true, 0, true);
+      return query.linkLength(r'animals', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishesIsNotEmpty() {
+  QueryBuilder<Line, Line, QAfterFilterCondition> animalsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'fishes', 0, false, 999999, true);
+      return query.linkLength(r'animals', 0, false, 999999, true);
     });
   }
 
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishesLengthLessThan(
+  QueryBuilder<Line, Line, QAfterFilterCondition> animalsLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'fishes', 0, true, length, include);
+      return query.linkLength(r'animals', 0, true, length, include);
     });
   }
 
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishesLengthGreaterThan(
+  QueryBuilder<Line, Line, QAfterFilterCondition> animalsLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'fishes', length, include, 999999, true);
+      return query.linkLength(r'animals', length, include, 999999, true);
     });
   }
 
-  QueryBuilder<Line, Line, QAfterFilterCondition> fishesLengthBetween(
+  QueryBuilder<Line, Line, QAfterFilterCondition> animalsLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -880,7 +882,7 @@ extension LineQueryLinks on QueryBuilder<Line, Line, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-        r'fishes',
+        r'animals',
         lower,
         includeLower,
         upper,
