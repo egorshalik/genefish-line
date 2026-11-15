@@ -4,6 +4,7 @@ import 'package:isar_community/isar.dart';
 
 import '../models/models.dart';
 import '../databases/isar_service.dart';
+import '../services/species_repository.dart';
 
 class AnimalDetailsScreen extends StatelessWidget {
   final int animalId;
@@ -70,7 +71,51 @@ class AnimalDetailsScreen extends StatelessWidget {
               _buildMainInfo(animal, theme),
               const SizedBox(height: 16),
 
-              // 3. ТЕГИ
+              // 3. СПРАВКА О ВИДЕ
+              FutureBuilder<Species?>(
+                future: _loadSpecies(animal),
+                builder: (context, snapshot) {
+                  // Пока грузится — показываем небольшую заглушку, чтобы UI не прыгал
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox(height: 16);
+                  }
+                  
+                  final species = snapshot.data;
+                  
+                  // Если вида нет
+                  if (species == null) {
+                    return Column(
+                      children: [
+                        Card(
+                          elevation: 0,
+                          color: theme.colorScheme.surfaceContainerLow,
+                          child: const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                Icon(Icons.pets, color: Colors.grey),
+                                SizedBox(width: 12),
+                                Text('Вид не указан'),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    );
+                  }
+
+                  // Если вид есть
+                  return Column(
+                    children: [
+                      _SpeciesInfoCard(speciesId: species.id),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
+              ),
+
+              // 4. ТЕГИ
               Text('Теги внешности', style: theme.textTheme.titleMedium),
               const SizedBox(height: 8),
               if (animal.traits.isEmpty)
@@ -83,7 +128,7 @@ class AnimalDetailsScreen extends StatelessWidget {
                 ),
               const SizedBox(height: 24),
 
-              // 4. ГЕНЕАЛОГИЯ (РОДИТЕЛИ)
+              // 5. ГЕНЕАЛОГИЯ (РОДИТЕЛИ)
               Text('Происхождение', style: theme.textTheme.titleMedium),
               const SizedBox(height: 8),
               FutureBuilder(
@@ -113,10 +158,13 @@ class AnimalDetailsScreen extends StatelessWidget {
     );
   }
 
+  Future<Species?> _loadSpecies(Animal animal) async {
+    await animal.species.load();
+    return animal.species.value;
+  }
+
   Future<Animal?> _loadParent(IsarLink<Animal> link) async {
-    // Сначала загружаем данные из БД
     await link.load();
-    // Затем возвращаем значение
     return link.value;
   }
 
@@ -192,7 +240,6 @@ class AnimalDetailsScreen extends StatelessWidget {
     );
   }
 
-  // Универсальный виджет для карточки родителя
   Widget _buildParentTile(BuildContext context, String label, Animal? parent, IconData icon, Color color) {
     final theme = Theme.of(context);
     
@@ -210,7 +257,6 @@ class AnimalDetailsScreen extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: ListTile(
         onTap: () {
-          // Переходим на карточку родителя
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => AnimalDetailsScreen(animalId: parent.id)),
@@ -225,6 +271,93 @@ class AnimalDetailsScreen extends StatelessWidget {
         subtitle: Text('Поколение ${parent.generation}'),
         trailing: const Icon(Icons.chevron_right),
       ),
+    );
+  }
+}
+
+class _SpeciesInfoCard extends StatelessWidget {
+  final Id speciesId;
+
+  const _SpeciesInfoCard({required this.speciesId});
+
+  @override
+  Widget build(BuildContext context) {
+    final isar = IsarService.instance;
+    final theme = Theme.of(context);
+    final repo = SpeciesRepository();
+
+    return StreamBuilder<Species?>(
+      stream: isar.species.watchObject(speciesId, fireImmediately: true),
+      builder: (context, snapshot) {
+        final species = snapshot.data;
+        if (species == null) return const SizedBox.shrink();
+
+        return Card(
+          elevation: 0,
+          color: theme.colorScheme.surfaceContainerLow,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.pets, color: theme.colorScheme.primary),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Вид: ${species.commonName}',
+                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                
+                if (species.infoStatus == SpeciesInfoStatus.loading)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: LinearProgressIndicator(),
+                  )
+                else if (species.infoStatus == SpeciesInfoStatus.loaded) ...[
+                  if (species.latinName != null && species.latinName!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Лат. название: ${species.latinName}',
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  if (species.description != null && species.description!.isNotEmpty)
+                    Text(species.description!, style: theme.textTheme.bodyMedium),
+                ] 
+                else if (species.infoStatus == SpeciesInfoStatus.failed) ...[
+                  Text(
+                    'Ошибка: ${species.infoError ?? "Не удалось загрузить"}',
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton.icon(
+                    onPressed: () => repo.fetchInfo(species),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Повторить'),
+                  ),
+                ] 
+                else ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => repo.fetchInfo(species),
+                      icon: const Icon(Icons.download),
+                      label: const Text('Загрузить справку'),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

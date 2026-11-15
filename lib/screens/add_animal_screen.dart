@@ -171,9 +171,15 @@ Future<void> _pickImage(ImageSource source) async {
         throw StateError('Линия #${widget.lineId} не найдена');
       }
       final speciesName = _speciesController.text.trim();
-      if (speciesName.isEmpty) {
+      final repo = SpeciesRepository();
+      final isValid = await repo.isValidAnimal(speciesName);
+      if (!isValid) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Укажите вид животного')),
+          const SnackBar(
+            content: Text('Не удалось распознать животное с таким названием. Проверьте орфографию.'),
+            backgroundColor: Colors.red,
+          ),
         );
         setState(() => _saving = false);
         return;

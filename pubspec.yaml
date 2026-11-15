@@ -4,14 +4,14 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '^3.13.0' # Убедитесь, что эта версия совпадает с вашей версией Dart (можно посмотреть в flutter doctor)
+  sdk: '^3.13.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:    # <--- ДОБАВИТЬ ЭТО
+  flutter_localizations:
     sdk: flutter
-  # Зависимости
+  http: ^1.2.0 
   isar_community: ^3.3.2
   isar_community_flutter_libs: ^3.3.2
   image_picker: ^1.1.2
@@ -21,10 +21,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # Генератор кода и сборщик
   isar_community_generator: ^3.3.2
   build_runner: ^2.4.13
 
-# ВОТ СЮДА НУЖНО ДОБАВИТЬ ЭТУ СЕКЦИЮ:
 flutter:
   uses-material-design: true

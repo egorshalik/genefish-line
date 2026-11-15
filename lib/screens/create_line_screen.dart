@@ -42,6 +42,19 @@ class _CreateLineScreenState extends State<CreateLineScreen> {
       }
       
       final speciesRepo = SpeciesRepository();
+      final isValid = await speciesRepo.isValidAnimal(speciesName);
+      if (!isValid) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Не удалось распознать животное с таким названием. Проверьте орфографию.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() => _saving = false);
+        return;
+      }
+
       final species = await speciesRepo.getOrCreate(speciesName);
 
       final line = Line()

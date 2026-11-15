@@ -17,7 +17,6 @@ class LineListScreen extends StatelessWidget {
         title: const Text('Мои линии'),
       ),
       body: StreamBuilder<List<Line>>(
-        // Реактивный поток: эмитит новый список при любом изменении Line.
         stream: isar.lines
             .where()
             .sortByStartDateDesc()
